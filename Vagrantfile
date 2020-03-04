@@ -69,7 +69,7 @@ Vagrant.configure(2) do |config|
     SHELL
   
     ######################################################################
-    # Add PostgreSQL docker container (Leaving commented out for now)
+    # Add PostgreSQL docker container ( Leaving commented out for now )
     ######################################################################
     # docker run -d --name postgres -p 5432:5432 -v psql_data:/var/lib/postgresql/data postgres
     # config.vm.provision :docker do |d|
