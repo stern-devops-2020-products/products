@@ -11,7 +11,7 @@ logger = logging.getLogger("flask.app")
 # Create the SQLAlchemy object to be initialized later in init_db()
 db = SQLAlchemy()
 
-class Products(Exception):
+class DataValidationError(Exception):
     """ Used for an data validation errors when deserializing """
     pass
 
