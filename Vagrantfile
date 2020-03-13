@@ -14,7 +14,7 @@ Vagrant.configure(2) do |config|
     # accessing "localhost:8080" will access port 80 on the guest machine.
     # config.vm.network "forwarded_port", guest: 80, host: 8080
     config.vm.network "forwarded_port", guest: 5000, host: 5000, host_ip: "127.0.0.1"
-  
+
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
     config.vm.network "private_network", ip: "192.168.33.10"
@@ -61,7 +61,8 @@ Vagrant.configure(2) do |config|
     # documentation for more information about their specific syntax and use.
     config.vm.provision "shell", inline: <<-SHELL
       apt-get update
-      apt-get install -y git python3 python3-pip python3-venv
+      apt-get install -y git python3 python3-pip python3-venv 
+      apt-get install -y postgresql-client
       apt-get -y autoremove
       # Install app dependencies
       cd /vagrant
@@ -69,14 +70,14 @@ Vagrant.configure(2) do |config|
     SHELL
   
     ######################################################################
-    # Add PostgreSQL docker container (Leaving commented out for now)
+    # Add PostgreSQL docker container 
     ######################################################################
     # docker run -d --name postgres -p 5432:5432 -v psql_data:/var/lib/postgresql/data postgres
-    # config.vm.provision :docker do |d|
-    #   d.pull_images "postgres:alpine"
-    #   d.run "postgres:alpine",
-    #      args: "-d --name postgres -p 5432:5432 -v psql_data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=postgres"
-    # end
+    config.vm.provision :docker do |d|
+      d.pull_images "postgres:alpine"
+      d.run "postgres:alpine",
+         args: "-d --name postgres -p 5432:5432 -v psql_data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=postgres"
+    end
   
   end
   
