@@ -64,7 +64,15 @@ class Products(db.Model):
         """ Serializes a product into a dictionary """
         return {
             "id": self.id,
-            "name": self.name
+            "name": self.name,
+            "price": self.price,
+            "stock": self.stock,
+            "size": self.size,
+            "color": self.color,
+            "category": self.category,
+            "gender": self.gender,
+            "description": self.description,
+            "date_added": self.date_added
         }
 
     def deserialize(self, data):
@@ -76,11 +84,19 @@ class Products(db.Model):
         """
         try:
             self.name = data["name"]
+            self.price = data["price"]
+            self.stock = data["stock"]
+            self.size = data["size"]
+            self.color = data["color"]
+            self.category = data["category"]
+            self.gender = data["gender"]
+            self.description = data["description"]
+            self.date_added = data["date_added"]
         except KeyError as error:
-            raise DataValidationError("Invalid <your resource name>: missing " + error.args[0])
+            raise DataValidationError("Invalid product: missing " + error.args[0])
         except TypeError as error:
             raise DataValidationError(
-                "Invalid <your resource name>: body of request contained" "bad or no data"
+                "Invalid product: body of request contained" "bad or no data"
             )
         return self
 
@@ -97,18 +113,18 @@ class Products(db.Model):
     @classmethod
     def all(cls):
         """ Returns all of the products in the database """
-        logger.info("Processing all <your resource name>s")
+        logger.info("Processing all products")
         return cls.query.all()
 
     @classmethod
     def find(cls, by_id):
-        """ Finds a product by it's ID """
+        """ Finds a product by its ID """
         logger.info("Processing lookup for id %s ...", by_id)
         return cls.query.get(by_id)
 
     @classmethod
     def find_or_404(cls, by_id):
-        """ Find a product by it's id """
+        """ Find a product by its id """
         logger.info("Processing lookup or 404 for id %s ...", by_id)
         return cls.query.get_or_404(by_id)
 
