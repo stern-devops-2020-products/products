@@ -3,6 +3,7 @@ Models for Products
 
 All of the models are stored in this module
 """
+
 import logging
 from flask_sqlalchemy import SQLAlchemy
 
@@ -11,12 +12,12 @@ logger = logging.getLogger("flask.app")
 # Create the SQLAlchemy object to be initialized later in init_db()
 db = SQLAlchemy()
 
+
 class DataValidationError(Exception):
     """ Used for an data validation errors when deserializing """
     pass
 
-
-class Products(db.Model):
+class Product(db.Model):
     """
     Class that represents a product
     """
@@ -25,18 +26,17 @@ class Products(db.Model):
 
     # Table Schema
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(63), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    stock = db.Column(db.Integer, nullable=False)
-    size = db.Column(db.String(4), nullable=False)
-    color = db.Column(db.String(10), nullable=False)
-    category = db.Column(db.String(63), nullable=False)
-    gender = db.Column(db.String(1))
+    name = db.Column(db.String(63))
+    available = db.Column(db.Boolean())
+    price = db.Column(db.Float)
+    stock = db.Column(db.Integer)
+    size = db.Column(db.String(4))
+    color = db.Column(db.String(10))
+    category = db.Column(db.String(63))
     description = db.Column(db.String(250))
-    date_added = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
-        return "<<Products> %r id=[%s]>" % (self.name, self.id)
+        return "<Product %r id=[%s]>" % (self.name, self.id)
 
     def create(self):
         """
@@ -65,14 +65,13 @@ class Products(db.Model):
         return {
             "id": self.id,
             "name": self.name,
+            "available": self.available,
             "price": self.price,
             "stock": self.stock,
             "size": self.size,
             "color": self.color,
             "category": self.category,
-            "gender": self.gender,
-            "description": self.description,
-            "date_added": self.date_added
+            "description": self.description
         }
 
     def deserialize(self, data):
@@ -84,19 +83,21 @@ class Products(db.Model):
         """
         try:
             self.name = data["name"]
+            self.available = data["available"]
             self.price = data["price"]
             self.stock = data["stock"]
             self.size = data["size"]
             self.color = data["color"]
             self.category = data["category"]
-            self.gender = data["gender"]
             self.description = data["description"]
-            self.date_added = data["date_added"]
+
         except KeyError as error:
-            raise DataValidationError("Invalid product: missing " + error.args[0])
-        except TypeError as error:
             raise DataValidationError(
-                "Invalid product: body of request contained" "bad or no data"
+                "Invalid Product: missing " + error.args[0]
+            )
+        except TypeError:
+            raise DataValidationError(
+                "Invalid Product: body of request contained" "bad or no data"
             )
         return self
 
@@ -113,18 +114,18 @@ class Products(db.Model):
     @classmethod
     def all(cls):
         """ Returns all of the products in the database """
-        logger.info("Processing all products")
+        logger.info("Processing all Products")
         return cls.query.all()
 
     @classmethod
     def find(cls, by_id):
-        """ Finds a product by its ID """
+        """ Finds a product by it's ID """
         logger.info("Processing lookup for id %s ...", by_id)
         return cls.query.get(by_id)
 
     @classmethod
     def find_or_404(cls, by_id):
-        """ Find a product by its id """
+        """ Find a product by it's id """
         logger.info("Processing lookup or 404 for id %s ...", by_id)
         return cls.query.get_or_404(by_id)
 
@@ -137,3 +138,13 @@ class Products(db.Model):
         """
         logger.info("Processing name query for %s ...", name)
         return cls.query.filter(cls.name == name)
+
+    @classmethod
+    def find_by_category(cls, category):
+        """ Returns all products with the given category
+
+        Args:
+            name (string): the category of the products you want to match
+        """
+        logger.info("Processing category query for %s ...", category)
+        return cls.query.filter(cls.category == category)
