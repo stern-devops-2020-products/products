@@ -5,7 +5,7 @@ Test cases for Products Model
 import logging
 import unittest
 import os
-from service.models import Products, DataValidationError, db
+from service.models import Product, DataValidationError, db
 from service import app
 
 DATABASE_URI = os.getenv(
@@ -25,7 +25,7 @@ class TestProducts(unittest.TestCase):
         app.config['DEBUG'] = False
         app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
         app.logger.setLevel(logging.CRITICAL)
-        Products.init_db(app)
+        Product.init_db(app)
         pass
 
     @classmethod
