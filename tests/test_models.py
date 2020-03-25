@@ -49,6 +49,49 @@ class TestProducts(unittest.TestCase):
 #  P L A C E   T E S T   C A S E S   H E R E 
 ######################################################################
 
-    def test_XXXX(self):
-        """ Test something """
-        self.assertTrue(True)
+    def test_create_a_product(self):
+        """ Create a product and assert that it exists """
+        product = Product(
+            name="Test Product",
+            sku="00000000",
+            price=1.01,
+            stock=10,
+            size="N/A",
+            color="N/A", 
+            category="Misc",
+            description="This is a test product", 
+            available=True
+            )
+        self.assertTrue(product != None)
+        self.assertEqual(product.id, None)
+        self.assertEqual(product.name, "Test Product")
+        self.assertEqual(product.sku, "00000000")
+        self.assertEqual(product.price, 1.01)
+        self.assertEqual(product.stock, 10)
+        self.assertEqual(product.size, "N/A")
+        self.assertEqual(product.color, "N/A")
+        self.assertEqual(product.category, "Misc")
+        self.assertEqual(product.available, True)
+
+    def test_add_a_product(self):
+        """ Create a product and add it to the database """
+        products = Product.all()
+        self.assertEqual(products, [])
+        product = Product(
+            name="Test Product",
+            sku="00000000",
+            price=1.01,
+            stock=10,
+            size="N/A",
+            color="N/A", 
+            category="Misc",
+            description="This is a test product", 
+            available=True
+            )
+        self.assertTrue(product != None)
+        self.assertEqual(product.id, None)
+        product.create()
+        # Assert that it was assigned an id and shows up in the database
+        self.assertEqual(product.id, 1)
+        products = Product.all()
+        self.assertEqual(len(products), 1)

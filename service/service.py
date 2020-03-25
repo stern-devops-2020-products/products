@@ -63,8 +63,25 @@ def list_products():
 ######################################################################
 
 ######################################################################
-# ADD A NEW PRODUCT
+# CREATE A NEW PRODUCT
 ######################################################################
+@app.route("/products", methods=["POST"])
+def create_product():
+    """
+    Creates a Product
+    This endpoint will create a Product based on the data in the body that is posted
+    """
+    app.logger.info("Request to create a product")
+    check_content_type("application/json")
+    product = Product()
+    product.deserialize(request.get_json())
+    product.create()
+    message = product.serialize()
+    #location_url = url_for("get_products", product_id=product.id, _external=True)
+    location_url = "not yet implemented - story #7"
+    return make_response(
+        jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
+    )
 
 ######################################################################
 # UPDATE AN EXISTING PRODUCT
@@ -82,3 +99,10 @@ def init_db():
     """ Initialies the SQLAlchemy app """
     global app
     Product.init_db(app)
+
+def check_content_type(content_type):
+    """ Checks that the media type is correct """
+    if request.headers["Content-Type"] == content_type:
+        return
+    app.logger.error("Invalid Content-Type: %s", request.headers["Content-Type"])
+    abort(415, "Content-Type must be {}".format(content_type))
