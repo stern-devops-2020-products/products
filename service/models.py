@@ -27,6 +27,7 @@ class Product(db.Model):
     # Table Schema
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(63))
+    sku = db.Column(db.String(14))
     available = db.Column(db.Boolean())
     price = db.Column(db.Float)
     stock = db.Column(db.Integer)
@@ -65,6 +66,7 @@ class Product(db.Model):
         return {
             "id": self.id,
             "name": self.name,
+            "sku": self.sku,
             "available": self.available,
             "price": self.price,
             "stock": self.stock,
@@ -83,6 +85,7 @@ class Product(db.Model):
         """
         try:
             self.name = data["name"]
+            self.sku = data["sku"]
             self.available = data["available"]
             self.price = data["price"]
             self.stock = data["stock"]
@@ -119,13 +122,13 @@ class Product(db.Model):
 
     @classmethod
     def find(cls, by_id):
-        """ Finds a product by it's ID """
+        """ Finds a product by its ID """
         logger.info("Processing lookup for id %s ...", by_id)
         return cls.query.get(by_id)
 
     @classmethod
     def find_or_404(cls, by_id):
-        """ Find a product by it's id """
+        """ Find a product by its id """
         logger.info("Processing lookup or 404 for id %s ...", by_id)
         return cls.query.get_or_404(by_id)
 

@@ -80,3 +80,54 @@ class TestProductServer(TestCase):
         data = resp.get_json()
         self.assertEqual(data["name"], "Product REST API Service")
     
+    def test_create_product(self):
+        """ Create a new Product """
+        test_product = {    
+            "name": "Test Product",
+            "sku": "00000000",
+            "price": 1.01,
+            "stock": 10,
+            "size": "N/A",
+            "color": "N/A",
+            "category": "Misc",
+            "description": "This is a test product",
+            "available": True
+        }
+        #test_product = ProductFactory()
+        resp = self.app.post(
+            "/products", 
+            json=test_product, 
+            content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        
+        # Make sure location header is set
+        location = resp.headers.get("Location", None)
+        self.assertIsNotNone(location)
+        
+        # Check the data is correct
+        new_product = resp.get_json()
+        self.assertEqual(new_product["name"], test_product["name"], "Names do not match")
+        self.assertEqual(new_product["sku"], test_product["sku"], "SKUs do not match")
+        self.assertEqual(new_product["price"], test_product["price"], "Prices do not match")
+        self.assertEqual(new_product["stock"], test_product["stock"], "Stock count does not match")
+        self.assertEqual(new_product["size"], test_product["size"], "Sizes do not match")
+        self.assertEqual(new_product["color"], test_product["color"], "Colors do not match")
+        self.assertEqual(new_product["category"], test_product["category"], "Categories do not match")
+        self.assertEqual(new_product["description"], test_product["description"], "Description does not match")
+        self.assertEqual(new_product["available"], test_product["available"], "Availability does not match")
+        
+        # **To Do: When get_product is set up can uncomment below**
+        # Check that the location header was correct
+        #resp = self.app.get(location, content_type="application/json")
+        #self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        #new_product = resp.get_json()
+        #self.assertEqual(new_product["name"], test_product["name"], "Names do not match")
+        #self.assertEqual(new_product["sku"], test_product["sku"], "SKUs do not match")
+        #self.assertEqual(new_product["price"], test_product["price"], "Prices do not match")
+        #self.assertEqual(new_product["stock"], test_product["stock"], "Stock count does not match")
+        #self.assertEqual(new_product["size"], test_product["size"], "Sizes do not match")
+        #self.assertEqual(new_product["color"], test_product["color"], "Colors do not match")
+        #self.assertEqual(new_product["category"], test_product["category"], "Categories do not match")
+        #self.assertEqual(new_product["description"], test_product["description"], "Description does not match")
+        #self.assertEqual(new_product["available"], test_product["available"], "Availability does not match")
