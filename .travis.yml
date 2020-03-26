@@ -4,7 +4,11 @@ python:
   - "3.6"
 
 # command to install dependencies
-install: "pip install -r requirements.txt"
+install: 
+  - "pip install -r requirements.txt"
+
+services:
+  - postgresql
 
 # commands to run tests
 # before_script: postgresql ping
@@ -14,6 +18,3 @@ script:
 
 after_success:
   - codecov
-
-#services:
-  - postgresql
