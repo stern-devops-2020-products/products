@@ -7,7 +7,7 @@ python:
 install: "pip install -r requirements.txt"
 
 # commands to run tests
-before_script: postgresql ping
+# before_script: postgresql ping
 
 script:
   - nosetests
