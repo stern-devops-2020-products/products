@@ -22,6 +22,8 @@ class ProductFactory(factory.Factory):
     size = FuzzyChoice(choices=["L", "M", "S"])
     color = FuzzyChoice(choices=["blue", "yellow", "red"])
     category = FuzzyChoice(choices=["paper", "electronics", "food"])
+    sku = "00000000"
+    description = "test description"
 
 if __name__ == "__main__":
     for _ in range(10):

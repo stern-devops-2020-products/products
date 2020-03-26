@@ -70,7 +70,7 @@ class TestProductServer(TestCase):
         return products
 
 ######################################################################
-#  P L A C E   T E S T   C A S E S   H E R E 
+#  I N D E X   T E S T   C A S E  
 ######################################################################
 
     def test_index(self):
@@ -79,6 +79,10 @@ class TestProductServer(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(data["name"], "Product REST API Service")
+
+######################################################################
+#  C R E A TE   T E S T   C A S E  
+######################################################################
     
     def test_create_product(self):
         """ Create a new Product """
@@ -131,3 +135,30 @@ class TestProductServer(TestCase):
         #self.assertEqual(new_product["category"], test_product["category"], "Categories do not match")
         #self.assertEqual(new_product["description"], test_product["description"], "Description does not match")
         #self.assertEqual(new_product["available"], test_product["available"], "Availability does not match")
+
+######################################################################
+#  G E T   T E S T   C A S E  
+######################################################################
+    def test_get_product_list(self):
+        """ Get a list of Products """
+        self._create_products(5)
+        resp = self.app.get("/products")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), 5)
+
+    def test_get_product(self):
+        """ Get a single Product """
+        # get the id of a product
+        test_product = self._create_products(1)[0]
+        resp = self.app.get(
+            "/products/{}".format(test_product.id), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(data["name"], test_product.name)
+
+    def test_get_product_not_found(self):
+        """ Get a Product thats not found """
+        resp = self.app.get("/products/0")
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)

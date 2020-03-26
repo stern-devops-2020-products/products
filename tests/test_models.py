@@ -6,7 +6,9 @@ import logging
 import unittest
 import os
 from service.models import Product, DataValidationError, db
+from werkzeug.exceptions import NotFound
 from service import app
+from .product_factory import ProductFactory
 
 DATABASE_URI = os.getenv(
     "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres"
@@ -46,7 +48,7 @@ class TestProducts(unittest.TestCase):
         pass
 
 ######################################################################
-#  P L A C E   T E S T   C A S E S   H E R E 
+# C R E A T E  T E S T   C A S E S
 ######################################################################
 
     def test_create_a_product(self):
@@ -95,3 +97,64 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(product.id, 1)
         products = Product.all()
         self.assertEqual(len(products), 1)
+
+######################################################################
+# G E T  T E S T   C A S E S
+######################################################################
+    def test_find_product(self):
+        """ Find a Product by ID """
+        products = ProductFactory.create_batch(3)
+        for product in products:
+            product.create()
+        logging.debug(products)
+        # make sure they got saved
+        self.assertEqual(len(Product.all()), 3)
+        # find the 2nd product in the list
+        test_product = Product.find(products[1].id)
+        self.assertIsNot(test_product, None)
+        self.assertEqual(test_product.id, products[1].id)
+        self.assertEqual(test_product.name, products[1].name)
+        self.assertEqual(test_product.available, products[1].available)
+        self.assertEqual(test_product.sku, products[1].sku)
+        self.assertEqual(test_product.price, products[1].price)
+        self.assertEqual(test_product.stock, products[1].stock)
+        self.assertEqual(test_product.size, products[1].size)
+        self.assertEqual(test_product.color, products[1].color)
+        self.assertEqual(test_product.category, products[1].category)
+
+    def test_find_by_category(self):
+        """ Find Products by Category """
+        products = ProductFactory.create_batch(3)
+        for product in products:
+            product.create()
+        category = products[0].category
+        test_products = Product.find_by_category(category)
+        self.assertEqual(test_products[0].category, category)
+        self.assertIsNot(test_products[0].category, "kitty")
+        self.assertEqual(test_products[0].id, products[0].id)
+        
+    def test_find_by_name(self):
+        """ Find a Product by Name """
+        products = ProductFactory.create_batch(3)
+        for product in products:
+            product.create()
+        name = products[0].name
+        test_products = Product.find_by_name(name)
+        self.assertEqual(test_products[0].name, name)
+        self.assertIsNot(test_products[0].name, "KEVIN")
+        self.assertEqual(test_products[0].id, products[0].id)
+
+    def test_find_or_404_found(self):
+        """ Find or return 404 found """
+        products = ProductFactory.create_batch(3)
+        for product in products:
+            product.create()
+        product = Product.find_or_404(products[1].id)
+        self.assertIsNot(product, None)
+        self.assertEqual(product.id, products[1].id)
+        self.assertEqual(product.name, products[1].name)
+        self.assertEqual(product.available, products[1].available)
+
+    def test_find_or_404_not_found(self):
+        """ Find or return 404 NOT found """
+        self.assertRaises(NotFound, Product.find_or_404, 0)

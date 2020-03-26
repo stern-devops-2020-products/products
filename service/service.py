@@ -61,6 +61,20 @@ def list_products():
 ######################################################################
 # RETRIEVE A PRODUCT
 ######################################################################
+@app.route("/products/<int:product_id>", methods=["GET"])
+def get_products(product_id):
+    """
+    Retrieve a single Product
+
+    This endpoint will return a product based on it's id
+    """
+    app.logger.info("Request for product with id: %s", product_id)
+    product = Product.find(product_id)
+    if not product:
+        raise NotFound(
+            "Product with id '{}' was not found.".format(product_id)
+        )
+    return make_response(jsonify(product.serialize()), status.HTTP_200_OK)
 
 ######################################################################
 # CREATE A NEW PRODUCT
@@ -77,8 +91,8 @@ def create_product():
     product.deserialize(request.get_json())
     product.create()
     message = product.serialize()
-    #location_url = url_for("get_products", product_id=product.id, _external=True)
-    location_url = "not yet implemented - story #7"
+    location_url = url_for("get_products", product_id=product.id, _external=True)
+    #location_url = "not yet implemented - story #7"
     return make_response(
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
