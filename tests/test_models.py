@@ -98,6 +98,26 @@ class TestProducts(unittest.TestCase):
         products = Product.all()
         self.assertEqual(len(products), 1)
 
+    def test_update_a_product(self):
+    """ Update a Product """
+        product = Product()
+        logging.debug(product)
+        product.create()
+        logging.debug(product)
+        self.assertEqual(product.id, 1)
+        # Change it and save it
+        product.category = "Shoes"
+        original_id = product.id
+        product.save()
+        self.assertEqual(product.id, original_id)
+        self.assertEqual(product.category, "Shoes")
+        # Fetch it back and make sure the id hasn't changed
+        # but the data did change
+        products = Product.all()
+        self.assertEqual(len(products), 1)
+        self.assertEqual(products[0].id, 1)
+        self.assertEqual(products[0].category, "Shoes")
+
 ######################################################################
 # G E T  T E S T   C A S E S
 ######################################################################
