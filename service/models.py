@@ -35,7 +35,7 @@ class Product(db.Model):
     color = db.Column(db.String(10))
     category = db.Column(db.String(63))
     description = db.Column(db.String(250))
-	lastUpdated = db.Column(db.String(10))
+    lastUpdated = db.Column(db.String(10))
 
     def __repr__(self):
         return "<Product %r id=[%s]>" % (self.name, self.id)
