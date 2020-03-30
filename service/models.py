@@ -35,7 +35,7 @@ class Product(db.Model):
     color = db.Column(db.String(10))
     category = db.Column(db.String(63))
     description = db.Column(db.String(250))
-    lastUpdated = db.Column(db.String(10))
+    #lastUpdated = db.Column(db.String(10))#
 
     def __repr__(self):
         return "<Product %r id=[%s]>" % (self.name, self.id)
@@ -74,8 +74,8 @@ class Product(db.Model):
             "size": self.size,
             "color": self.color,
             "category": self.category,
-            "description": self.description,
-            "lastUpdated": self.lastUpdated
+            "description": self.description#, Tabling for this sprint
+            #"lastUpdated": self.lastUpdated#
         }
 
     def deserialize(self, data):
@@ -95,7 +95,7 @@ class Product(db.Model):
             self.color = data["color"]
             self.category = data["category"]
             self.description = data["description"]
-            self.lastUpdated = data["lastUpdated"]
+            #self.lastUpdated = data["lastUpdated"]# Tabling for this sprint
 
         except KeyError as error:
             raise DataValidationError(
