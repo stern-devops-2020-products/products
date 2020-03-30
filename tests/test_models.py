@@ -99,7 +99,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(len(products), 1)
 
     def test_update_a_product(self):
-    """ Update a Product """
+        """ Update a Product """
         product = Product()
         logging.debug(product)
         product.create()
