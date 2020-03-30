@@ -121,6 +121,19 @@ def update_product(product_id):
 ######################################################################
 # DELETE A PRODUCT
 ######################################################################
+@app.route("/products/<int:product_id>", methods=["DELETE"])
+def delete_products(product_id):
+    """
+    Delete a Product
+    This endpoint will delete a Product based the id specified in the path
+    """
+    app.logger.info("Request to delete product with id: %s", product_id)
+    product = Product.find(product_id)
+    if product:
+        product.delete()
+
+    app.logger.info("Product with ID [%s] delete complete.", product_id)
+    return make_response("", status.HTTP_204_NO_CONTENT)
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
