@@ -75,6 +75,7 @@ class Product(db.Model):
             "color": self.color,
             "category": self.category,
             "description": self.description
+            "lastUpdated": self.lastUpdated
         }
 
     def deserialize(self, data):
@@ -94,6 +95,7 @@ class Product(db.Model):
             self.color = data["color"]
             self.category = data["category"]
             self.description = data["description"]
+            self.lastUpdated = data["lastUpdated"]
 
         except KeyError as error:
             raise DataValidationError(
