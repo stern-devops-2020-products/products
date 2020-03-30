@@ -74,7 +74,7 @@ class Product(db.Model):
             "size": self.size,
             "color": self.color,
             "category": self.category,
-            "description": self.description
+            "description": self.description,
             "lastUpdated": self.lastUpdated
         }
 
