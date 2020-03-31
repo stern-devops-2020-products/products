@@ -3,6 +3,22 @@
 
 The products resource represents the store items that the customer can buy. They could be categorized but they don’t have to be for this assignment. They should have a unique id (perhaps a SKU - Stock Keeping Unit), a name, description, price, and others attributes like perhaps an image. 
 
+## Running the Service
+Prereqs:
+```
+1. Vagrant
+2. Virtualbox
+```
+First, clone this git repository.
+Next, open a bash command shell and use the following commands:
+```
+vagrant up
+vagrant ssh
+cd /vagrant/
+flask run -h 0.0.0.0
+```
+This will start the service and forward to port 5000 on your local machine
+
 ## Table Schema
 - id (integer)
 - name (string, length of 63)
