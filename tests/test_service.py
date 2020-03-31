@@ -120,21 +120,20 @@ class TestProductServer(TestCase):
         self.assertEqual(new_product["category"], test_product["category"], "Categories do not match")
         self.assertEqual(new_product["description"], test_product["description"], "Description does not match")
         self.assertEqual(new_product["available"], test_product["available"], "Availability does not match")
-        
-        # **To Do: When get_product is set up can uncomment below**
+                
         # Check that the location header was correct
-        #resp = self.app.get(location, content_type="application/json")
-        #self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        #new_product = resp.get_json()
-        #self.assertEqual(new_product["name"], test_product["name"], "Names do not match")
-        #self.assertEqual(new_product["sku"], test_product["sku"], "SKUs do not match")
-        #self.assertEqual(new_product["price"], test_product["price"], "Prices do not match")
-        #self.assertEqual(new_product["stock"], test_product["stock"], "Stock count does not match")
-        #self.assertEqual(new_product["size"], test_product["size"], "Sizes do not match")
-        #self.assertEqual(new_product["color"], test_product["color"], "Colors do not match")
-        #self.assertEqual(new_product["category"], test_product["category"], "Categories do not match")
-        #self.assertEqual(new_product["description"], test_product["description"], "Description does not match")
-        #self.assertEqual(new_product["available"], test_product["available"], "Availability does not match")
+        resp = self.app.get(location, content_type="application/json")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        new_product = resp.get_json()
+        self.assertEqual(new_product["name"], test_product["name"], "Names do not match")
+        self.assertEqual(new_product["sku"], test_product["sku"], "SKUs do not match")
+        self.assertEqual(new_product["price"], test_product["price"], "Prices do not match")
+        self.assertEqual(new_product["stock"], test_product["stock"], "Stock count does not match")
+        self.assertEqual(new_product["size"], test_product["size"], "Sizes do not match")
+        self.assertEqual(new_product["color"], test_product["color"], "Colors do not match")
+        self.assertEqual(new_product["category"], test_product["category"], "Categories do not match")
+        self.assertEqual(new_product["description"], test_product["description"], "Description does not match")
+        self.assertEqual(new_product["available"], test_product["available"], "Availability does not match")
 
 ######################################################################
 #  G E T   T E S T   C A S E  
@@ -162,6 +161,31 @@ class TestProductServer(TestCase):
         """ Get a Product thats not found """
         resp = self.app.get("/products/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+######################################################################
+#  U P D A T E   P R O D U C T   T E S T   C A S E  
+######################################################################
+    def test_update_product(self):
+        """ Update an existing Product """
+        # create a product to update
+        test_product = ProductFactory()
+        resp = self.app.post(
+            "/products", json=test_product.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # update the product
+        new_product = resp.get_json()
+        logging.debug(new_product)
+        new_product["category"] = "unknown"
+        resp = self.app.put(
+            "/products/{}".format(new_product["id"]),
+            json=new_product,
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        updated_product = resp.get_json()
+        self.assertEqual(updated_product["category"], "unknown")
 
 ######################################################################
 #  D E L E T E   T E S T   C A S E  
