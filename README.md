@@ -1,4 +1,4 @@
-# products
+# Products
 [![Build Status](https://travis-ci.org/stern-devops-2020-products/products.svg?branch=master)](https://travis-ci.org/stern-devops-2020-products/products)
 
 The products resource represents the store items that the customer can buy. They could be categorized but they don’t have to be for this assignment. They should have a unique id (perhaps a SKU - Stock Keeping Unit), a name, description, price, and others attributes like perhaps an image. 
@@ -38,4 +38,10 @@ To run a query use the following to execute a query in the query.txt file once a
 Alternatively, you can access the database directly from inside docker using:
 ```
 docker exec -it postgres psql -U postgres
+```
+
+## Pylint
+To run pylint use the following command from the /vagrant folder while in the VM. This will recursively check each python file in the active directory.
+```
+pylint ./**/*.py
 ```
