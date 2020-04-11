@@ -68,6 +68,11 @@ Vagrant.configure(2) do |config|
       cd /vagrant
       pip3 install -r requirements.txt
     SHELL
+
+     # Copy your IBM Cloud API Key if you have one
+    if File.exists?(File.expand_path("~/.bluemix/apiKey.json"))
+    config.vm.provision "file", source: "~/.bluemix/apiKey.json", destination: "~/.bluemix/apiKey.json"
+    end
   
     ######################################################################
     # Add PostgreSQL docker container 
@@ -78,6 +83,29 @@ Vagrant.configure(2) do |config|
       d.run "postgres:alpine",
          args: "-d --name postgres -p 5432:5432 -v psql_data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=postgres"
     end
+
+    ######################################################################
+    # Setup a Bluemix and Kubernetes environment
+    ######################################################################
+    config.vm.provision "shell", inline: <<-SHELL
+      echo "\n************************************"
+      echo " Installing IBM Cloud CLI..."
+      echo "************************************\n"
+      # Install IBM Cloud CLI as Vagrant user
+      sudo -H -u vagrant sh -c 'curl -sL http://ibm.biz/idt-installer | bash'
+      sudo -H -u vagrant sh -c "echo 'source <(kubectl completion bash)' >> ~/.bashrc"
+      sudo -H -u vagrant sh -c "echo alias ic=/usr/local/bin/ibmcloud >> ~/.bash_aliases"
+      echo "\n"
+      echo "If you have an IBM Cloud API key in ~/.bluemix/apiKey.json"
+      echo "You can login with the following command:"
+      echo "\n"
+      echo "ibmcloud login -a https://cloud.ibm.com --apikey @~/.bluemix/apiKey.json -r us-south"
+      echo "\n"
+      echo "\n************************************"
+      echo " For the Kubernetes Dashboard use:"
+      echo " kubectl proxy --address='0.0.0.0'"
+      echo "************************************\n"   
+    SHELL
   
   end
   
