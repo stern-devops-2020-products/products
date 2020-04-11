@@ -104,7 +104,10 @@ Vagrant.configure(2) do |config|
       echo "\n************************************"
       echo " For the Kubernetes Dashboard use:"
       echo " kubectl proxy --address='0.0.0.0'"
-      echo "************************************\n"   
+      echo "************************************\n"
+      echo "Installing Cloud Foundry CLI"
+      ibmcloud cf install
+      echo "Cloud Foundry CLI Installed"   
     SHELL
   
   end
