@@ -187,6 +187,22 @@ class TestProductServer(TestCase):
         updated_product = resp.get_json()
         self.assertEqual(updated_product["category"], "unknown")
 
+    def test_restock_product_by_id(self):
+        """ Restock a product """
+        test_product = self._create_products(1)[0]
+        test_product.stock = 0
+        test_product.available = False
+        stock = 99
+        resp = self.app.put(
+            "/products/{0}?stock={1}".format(test_product.id, stock)
+        )
+        resp = self.app.get("/products/{}".format(test_product.id))
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(data["available"], True)
+        self.assertEqual(data["stock"], 99)
+
+
 ######################################################################
 #  D E L E T E   T E S T   C A S E  
 ######################################################################
