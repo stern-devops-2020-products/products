@@ -107,6 +107,12 @@ class Product(db.Model):
             )
         return self
 
+    def restock(self, quant):
+        """ Restocks a product in the database """
+        self.stock = quant
+        self.available = True
+        logger.info("Restocked {0}. There are now {1} available".format(self.name, self.stock))
+
     @classmethod
     def init_db(cls, app):
         """ Initializes the database session """

@@ -98,6 +98,10 @@ class TestProducts(unittest.TestCase):
         products = Product.all()
         self.assertEqual(len(products), 1)
 
+######################################################################
+# P U T  T E S T   C A S E S
+######################################################################
+
     def test_update_a_product(self):
         """ Update a Product """
         product = Product()
@@ -117,6 +121,28 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(len(products), 1)
         self.assertEqual(products[0].id, 1)
         self.assertEqual(products[0].category, "Shoes")
+
+    def test_restock_a_product(self):
+        """ Restock a Product """
+        products = ProductFactory.create_batch(1)
+        for product in products:
+            product.create()
+
+        products[0].available = False
+        products[0].stock = 0
+        product.save()
+        products = Product.all()
+        self.assertEqual(len(products), 1)
+        self.assertEqual(products[0].id, 1)
+        self.assertEqual(products[0].stock, 0)
+        self.assertEqual(products[0].available, False)
+        product.restock(100)
+        product.save()
+        products = Product.all()
+        self.assertEqual(len(products), 1)
+        self.assertEqual(products[0].id, 1)
+        self.assertEqual(products[0].stock, 100)
+        self.assertEqual(products[0].available, True)
 
 ######################################################################
 # G E T  T E S T   C A S E S

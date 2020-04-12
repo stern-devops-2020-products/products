@@ -107,12 +107,18 @@ def update_product(product_id):
     This endpoint will update a Product based on the body that is posted
     """
     app.logger.info("Request to update product with id: %s", product_id)
-    check_content_type("application/json")
+    stock = request.args.get("stock")
     product = Product.find(product_id)
     if not product:
         raise NotFound(
             "Product with id '{}' was not found.".format(product_id)
         )
+    elif stock:
+        product.restock(stock)
+        product.save()
+        return make_response(jsonify(product.serialize()), status.HTTP_200_OK)
+       
+    check_content_type("application/json")
     product.deserialize(request.get_json())
     product.id = product_id
     product.save()
