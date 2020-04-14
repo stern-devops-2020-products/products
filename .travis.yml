@@ -11,8 +11,6 @@ services:
   - postgresql
 
 # commands to run tests
-# before_script: postgresql ping
-
 script:
   - nosetests
 
