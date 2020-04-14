@@ -106,7 +106,7 @@ Vagrant.configure(2) do |config|
       echo " kubectl proxy --address='0.0.0.0'"
       echo "************************************\n"
       echo "Installing Cloud Foundry CLI"
-      ibmcloud cf install
+      ibmcloud cf install --version 6.46.1
       echo "Cloud Foundry CLI Installed"   
     SHELL
   
