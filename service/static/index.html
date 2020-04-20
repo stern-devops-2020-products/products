@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Products</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/css/blue_bootstrap.min.css">
+    <script type="text/javascript" src = "static/js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="static/js/rest_api.js"></script>
+    <link rel="icon" type="image/png"  href="static/images/icon.png">
+  </head>
+  <body>
+    <div class="container">
+        <div class="page-header">
+          <img src="static/images/nyu_long_white.png" alt="NYU Logo">
+          <h1>Products RESTful Service API</h1>
+        </div>
+
+        <!-- Flash Message -->
+        <div class="table-responsive">
+          <table class="table">
+            <tr><td>Status:</td><td><span id="flash_message"></span></td></tr>
+          </table>
+        </div>
+
+        <div class="col-md-12" id="form_data">
+          Create, Retrieve, Update, and Delete a Product:
+          <div class="well">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label class="control-label col-sm-1" for="product_id">Product ID:</label>
+                <div class="col-sm-2">
+                  <input type="text" class="form-control" id="product_id" placeholder="Enter Product ID">
+                </div>
+                <div class="col-sm-1">
+                  <button type="submit" class="btn btn-primary" id="retrieve-btn" style="float: right;">Retrieve</button>
+                </div>
+                <div class="col-sm-1">
+                  <button type="submit" class="btn btn-warning" id="update-btn" style="float: right;">Update</button>
+                </div>
+                <div class="col-sm-1">
+                  <button type="submit" class="btn btn-danger" id="delete-btn" style="float: right;">Delete</button>
+                </div>
+                <label class="control-label col-sm-1" for="product_available">Available?</label>
+                <div class="col-sm-5">
+                  <select class="form-control" id="product_available">
+                      <option value="true" selected>True</option>
+                      <option value="false">False</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-1" for="product_name">Name:</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="product_name" placeholder="Enter Product Name (Searchable)">
+                </div>
+                <label class="control-label col-sm-1" for="product_description">Description:</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="product_description" placeholder="Enter Product Description">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-1" for="product_sku">SKU:</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="product_sku" placeholder="Enter Product SKU">
+                </div>
+                <label class="control-label col-sm-1" for="product_category">Category:</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="product_category" placeholder="Enter Product Category (Searchable)">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-1" for="product_size">Size:</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="product_size" placeholder="Enter Product Size">
+                </div>
+                <label class="control-label col-sm-1" for="product_color">Color:</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="product_color" placeholder="Enter Product Color">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-1" for="product_price">Price:</label>
+                <div class="col-sm-5">
+                  <input type="number" class="form-control" id="product_price" min="0" step="0.01" placeholder="Enter Product Price">
+                </div>
+                <label class="control-label col-sm-1" for="product_stock">Stock:</label>
+                <div class="col-sm-4">
+                  <input type="number"  class="form-control" id="product_stock" min="0" step="1" placeholder="Enter Product Quantity">
+                </div>
+                <div class="col-sm-1">
+                  <button type="submit" class="btn btn-success" id="restock-btn" style="float: right;">Restock</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-1">
+                  <button type="submit" class="btn btn-primary" id="search-btn" >Search</button>
+                </div>
+                <div class="col-sm-1">
+                  <button type="submit" class="btn btn-primary" id="clear-btn" style="float: right;">Clear</button>
+                </div>
+                <div class="col-sm-1">
+                  <button type="submit" class="btn btn-success" id="create-btn" style="float: right;">Create</button>
+                </div>
+                </div>
+              </div>
+          </div> <!-- form div -->
+        </div>
+
+        <!-- Search Results -->
+        <div class="table-responsive col-md-12" id="search_results">
+          <table class="table-striped">
+            <thead>
+            <tr>
+                <th class="col-md-2" >ID</th>
+                <th class="col-md-1">Name</th>
+                <th class="col-md-1">SKU</th>
+                <th class="col-md-1">Size</th>
+                <th class="col-md-1">Price</th>
+                <th class="col-md-1">Stock</th>
+                <th class="col-md-1">Category</th>
+                <th class="col-md-1">Color</th>
+                <th class="col-md-3">Description</th>
+                <th class="col-md-1">Available</th>
+            </tr>
+            </thead>
+          </table>
+        </div>
+
+        <footer>
+          <br><br>
+          <p>&copy; NYU Stern Products Team 2019</p>
+        </footer>
+        </div><!--/span-->
+     </div><!--/row-->
+
+  </div><!-- container -->
+  </body>
+</html>
