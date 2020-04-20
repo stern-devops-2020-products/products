@@ -5,6 +5,7 @@ Test cases for Products Model
 import logging
 import unittest
 import os
+import json
 from service.models import Product, DataValidationError, db
 from werkzeug.exceptions import NotFound
 from service import app
