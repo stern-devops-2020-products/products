@@ -143,6 +143,15 @@ def delete_products(product_id):
     return make_response("", status.HTTP_204_NO_CONTENT)
 
 ######################################################################
+# DELETE ALL PET DATA (for testing only)
+######################################################################
+@app.route('/products/reset', methods=['DELETE'])
+def products_reset():
+    """ Removes all products from the database """
+    Product.remove_all()
+    return make_response('', status.HTTP_204_NO_CONTENT)
+
+######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
 

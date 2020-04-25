@@ -160,3 +160,8 @@ class Product(db.Model):
         """
         logger.info("Processing category query for %s ...", category)
         return cls.query.filter(cls.category == category)
+
+    @classmethod
+    def remove_all(cls):
+        """ Removes all documents from the database (use for testing)  """
+        cls.query.delete()
