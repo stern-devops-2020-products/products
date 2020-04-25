@@ -76,7 +76,8 @@ $(function () {
         });
 
         ajax.done(function(res){
-            clear_form_data()
+            //clear_form_data()
+            update_form_data(res)
             flash_message("Product Created")
         });
 
