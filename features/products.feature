@@ -54,6 +54,6 @@ Scenario: Create a Product
     Scenario: List All Products
     When I visit the "Home Page"
     And I press the "Search" button
-    Then I should see "Kevin" in the results
+    Then I should see "Nike" in the results
     And I should not see "Scott" in the results
     
