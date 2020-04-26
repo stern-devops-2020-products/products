@@ -5,10 +5,10 @@ Feature: The product store service back-end
 
 Background:
     Given the following products
-        | name       | sku      | price     | stock      | size     | color     | category      | description       | available     |
-        | Nike       | 345903   | 34.99     | 10         | S        | Pink      | sweatshirt    | Nike sweatshirt   | True          | 
-        | Pants      | 345890   | 20.00     | 80         | M        | Black     | pants         | Nike pants        | True          | 
-        
+        | name            | sku         | price     | stock     | size     | color     | category      | description                 | available     |
+        | Nike sweatshirt | 345903000   | 34.99     | 10        | S        | Pink      | Shirts        | Nike sweatshirt             | True          | 
+        | Pants           | 345890000   | 24.99     | 80        | M        | Black     | Pants         | Nike pants                  | True          |
+        | Black t-shirt   | 100000002   | 19.99     | 5         | L        | Black     | Shirts        | Black short-sleeved t-shirt | True          |
 
 Scenario: The server is running
     When I visit the "Home Page"
@@ -51,9 +51,39 @@ Scenario: Create a Product
     And I should see "Best person ever" in the "Description" field
     And I should see "True" in the "Available" dropdown
 
-    Scenario: List All Products
+Scenario: List All Products
     When I visit the "Home Page"
     And I press the "Search" button
     Then I should see "Nike" in the results
     And I should not see "Scott" in the results
+
+Scenario: Read a Product
+    When I visit the "Home Page"
+    And I set the "Name" to "Pants"
+    And I press the "Search" button
+    Then I should see "Pants" in the "Name" field
+    And I should see "345890000" in the "SKU" field
+    And I should see "24.99" in the "Price" field
+    And I should see "M" in the "Size" field
+    And I should see "Black" in the "Color" field
+    And I should see "Nike pants" in the "Description" field
+    And I should see "Pants" in the "Category" field
     
+Scenario: Update a Product
+    When I visit the "Home Page"
+    And I set the "Name" to "Black t-shirt"
+    And I press the "Search" button
+    Then I should see "Black t-shirt" in the "Name" field
+    And I should see "Shirts" in the "Category" field
+    When I change "Description" to "Black long-sleeved t-shirt"
+    And I press the "Update" button
+    Then I should see the message "Product Updated"
+    When I copy the "Id" field
+    And I press the "Clear" button
+    And I paste the "Id" field
+    And I press the "Retrieve" button
+    Then I should see "Black long-sleeved t-shirt" in the "Description" field
+    When I press the "Clear" button
+    And I press the "Search" button
+    Then I should see "Black long-sleeved t-shirt" in the results
+    Then I should not see "Black short-sleeved t-shirt" in the results
