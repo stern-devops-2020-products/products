@@ -15,7 +15,7 @@ Scenario: The server is running
     Then I should see "Products" in the title
     And  I should not see "404 Not Found"
 
-Scenario: Create a Pet
+Scenario: Create a Product
     When I visit the "Home Page"
     And I set the "Name" to "Kevin"
     And I set the "SKU" to "KJA324"
@@ -50,3 +50,10 @@ Scenario: Create a Pet
     And I should see "People" in the "Category" field
     And I should see "Best person ever" in the "Description" field
     And I should see "True" in the "Available" dropdown
+
+    Scenario: List All Products
+    When I visit the "Home Page"
+    And I press the "Search" button
+    Then I should see "Nike" in the results
+    And I should not see "Scott" in the results
+    
