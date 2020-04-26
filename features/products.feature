@@ -87,3 +87,18 @@ Scenario: Update a Product
     And I press the "Search" button
     Then I should see "Black long-sleeved t-shirt" in the results
     Then I should not see "Black short-sleeved t-shirt" in the results
+
+Scenario: Restock a Product
+    When I visit the "Home Page"
+    And I set the "Name" to "Black t-shirt"
+    And I press the "Search" button
+    Then I should see "Black t-shirt" in the "Name" field
+    And I should see "5" in the "Stock" field
+    When I change "Stock" to "40"
+    And I press the "Restock" button
+    Then I should see the message "Product Restocked"
+    When I copy the "Id" field
+    And I press the "Clear" button
+    And I paste the "Id" field
+    And I press the "Retrieve" button
+    Then I should see "40" in the "Stock" field
