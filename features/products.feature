@@ -102,3 +102,17 @@ Scenario: Restock a Product
     And I paste the "Id" field
     And I press the "Retrieve" button
     Then I should see "40" in the "Stock" field
+
+Scenario: Delete a Product
+    When I visit the "Home Page"
+    And I set the "Name" to "Pants"
+    And I press the "Search" button
+    Then I should see "345890000" in the "SKU" field
+    When I press the "Delete" button
+    Then I should see the message "Product deleted!"
+    When I press the "Clear" button
+    Then the "Id" field should be empty
+    When I set the "Name" to "Pants"
+    And I press the "Search" button
+    Then I should not see "Pants" in the results
+    And I should not see "345890000" in the results
