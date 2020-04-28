@@ -116,3 +116,11 @@ Scenario: Delete a Product
     And I press the "Search" button
     Then I should not see "Pants" in the results
     And I should not see "345890000" in the results
+
+Scenario: Query a Product
+    When I visit the "Home Page"
+    And I set the "Category" to "Shirts"
+    And I press the "Search" button
+    Then I should see "Nike sweatshirt" in the results
+    And I should see "Black t-shirt" in the results
+    And I should not see "Pants" in the results
